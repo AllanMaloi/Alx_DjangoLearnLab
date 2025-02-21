@@ -1,10 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
 from .models import Book, Library  # Import Book and Library on separate lines
 from django.contrib.auth import views as auth_views
+from django.contrib.auth import login  # Added import statement
 from .forms import CustomUserCreationForm
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
 
 # Function-based view to list all books
 def list_books(request):
@@ -21,8 +20,9 @@ class LibraryDetailView(DetailView):
 def register(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
+        if form is_valid():
+            user = form.save()
+            login(request, user)  # Log the user in after registration
             return redirect('login')
     else:
         form = CustomUserCreationForm()
