@@ -6,7 +6,6 @@ from django.contrib.auth import login  # Import login for user session
 from django.contrib.auth.forms import UserCreationForm  # Added import statement
 from .forms import CustomUserCreationForm
 from django.contrib.auth.decorators import user_passes_test
-from django.http import HttpResponse
 
 # Function-based view to list all books
 def list_books(request):
@@ -40,7 +39,7 @@ def is_admin(user):
 # Admin view
 @user_passes_test(is_admin)
 def admin_view(request):
-    return HttpResponse("Welcome, Admin!")
+    return render(request, 'relationship_app/admin_view.html')
 
 # Function to check if user is librarian
 def is_librarian(user):
@@ -49,7 +48,7 @@ def is_librarian(user):
 # Librarian view
 @user_passes_test(is_librarian)
 def librarian_view(request):
-    return HttpResponse("Welcome, Librarian!")
+    return render(request, 'relationship_app/librarian_view.html')
 
 # Function to check if user is member
 def is_member(user):
@@ -58,4 +57,4 @@ def is_member(user):
 # Member view
 @user_passes_test(is_member)
 def member_view(request):
-    return HttpResponse("Welcome, Member!")
+    return render(request, 'relationship_app/member_view.html')
