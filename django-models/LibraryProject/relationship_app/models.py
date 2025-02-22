@@ -11,6 +11,13 @@ class Book(models.Model):
     title = models.CharField(max_length=100)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
 
+    class Meta:
+        permissions = [
+            ("can_add_special_book", "Can add special book"),
+            ("can_change_special_book", "Can change special book"),
+            ("can_delete_special_book", "Can delete special book"),
+        ]
+
     def __str__(self):
         return self.title
 
@@ -22,7 +29,7 @@ class Library(models.Model):
         return self.name
 
 class Librarian(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)  # Corrected keyword argument
     library = models.OneToOneField(Library, on_delete=models.CASCADE)
 
     def __str__(self):
