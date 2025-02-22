@@ -13,9 +13,9 @@ class Book(models.Model):
 
     class Meta:
         permissions = [
-            ("can_add_special_book", "Can add special book"),
-            ("can_change_special_book", "Can change special book"),
-            ("can_delete_special_book", "Can delete special book"),
+            ("can_add_book", "Can add book"),
+            ("can_change_book", "Can change book"),
+            ("can_delete_book", "Can delete book"),
         ]
 
     def __str__(self):
@@ -29,7 +29,7 @@ class Library(models.Model):
         return self.name
 
 class Librarian(models.Model):
-    name = models.CharField(max_length=100)  # Corrected keyword argument
+    name = models.CharField(max_length=100)
     library = models.OneToOneField(Library, on_delete=models.CASCADE)
 
     def __str__(self):
