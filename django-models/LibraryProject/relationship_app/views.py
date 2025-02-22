@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CustomUserCreationForm, BookForm
-from django.contrib.auth.decorators import user_passes_test, permission_required
+from django.contrib.auth.decorators import permission_required, user_passes_test  # Ensure this is here
 
 # Function-based view to list all books
 def list_books(request):
