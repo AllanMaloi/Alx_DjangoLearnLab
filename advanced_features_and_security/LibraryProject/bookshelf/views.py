@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import render, get_object_or_404
 from .models import CustomUser, Book
+from .forms import ExampleForm  # Add this import
 
 @permission_required('bookshelf.can_edit', raise_exception=True)
 def edit_user(request, user_id):
