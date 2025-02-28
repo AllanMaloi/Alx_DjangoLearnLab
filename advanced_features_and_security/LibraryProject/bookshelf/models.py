@@ -27,11 +27,19 @@ class CustomUser(AbstractUser):
     date_of_birth = models.DateField(null=True, blank=True)
     profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
 
-    objects = CustomUserManager()  # Integrate the custom user manager here
+    objects = CustomUserManager()
 
     def __str__(self):
         return self.username
 
+    class Meta:
+        permissions = [
+            ("can_view", "Can view user"),
+            ("can_create", "Can create user"),
+            ("can_edit", "Can edit user"),
+            ("can_delete", "Can delete user"),
+        ]
+
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    # Other fields can be added here
+    # Other fields...
