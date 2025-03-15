@@ -1,4 +1,3 @@
-# api/urls.py
 from django.urls import path
 from .views import (
     BookListView,
@@ -9,9 +8,9 @@ from .views import (
 )
 
 urlpatterns = [
-    path('', BookListView.as_view(), name='book-list'),  # List all books
-    path('<int:pk>/', BookDetailView.as_view(), name='book-detail'),  # Retrieve a single book
-    path('create/', BookCreateView.as_view(), name='book-create'),  # Add a new book
-    path('update/<int:pk>/', BookUpdateView.as_view(), name='book-update'),  # Update a book
-    path('delete/<int:pk>/', BookDeleteView.as_view(), name='book-delete'),  # Delete a book
+    path('books/', BookListView.as_view(), name='book-list'),  # List all books
+    path('books/<int:pk>/', BookDetailView.as_view(), name='book-detail'),  # Retrieve a single book by ID
+    path('books/create/', BookCreateView.as_view(), name='book-create'),  # Add a new book
+    path('books/update/<int:pk>/', BookUpdateView.as_view(), name='book-update'),  # Update a book
+    path('books/delete/<int:pk>/', BookDeleteView.as_view(), name='book-delete'),  # Delete a book
 ]
