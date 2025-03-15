@@ -1,55 +1,23 @@
-from rest_framework import generics
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
-from rest_framework.filters import SearchFilter
-from .models import Book
-from .serializers import BookSerializer
-from .permissions import IsAuthorOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 
-# List all books with optional search functionality
 class BookListView(generics.ListAPIView):
+    """
+    Retrieve all books with support for filtering, searching, and ordering.
+
+    Filtering:
+    - Filter by title, author's name, and publication year using query parameters (e.g., /books/?title=Django).
+
+    Searching:
+    - Search for books by title or author's name using 'search' query parameter (e.g., /books/?search=Advanced).
+
+    Ordering:
+    - Order results by title or publication year using 'ordering' query parameter (e.g., /books/?ordering=-publication_year).
+    """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    filter_backends = [SearchFilter]
-    search_fields = ['author__name']  # Users can search books by author's name
-
-# Retrieve a single book by its ID
-class BookDetailView(generics.RetrieveAPIView):
-    """
-    Retrieves a single book by its ID.
-    Accessible by everyone for read-only access.
-    """
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
-
-# Add a new book (authenticated users only)
-class BookCreateView(generics.CreateAPIView):
-    """
-    Allows authenticated users to add a new book.
-    """
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated]
-
-    def perform_create(self, serializer):
-        # Customize the creation process if needed (e.g., assigning an author)
-        serializer.save()  # Adjust as necessary if author assignment is required
-
-# Update an existing book (authenticated users and authors only)
-class BookUpdateView(generics.UpdateAPIView):
-    """
-    Allows authenticated users (specific book's author) to update a book.
-    """
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
-
-# Delete a book (authenticated users and authors only)
-class BookDeleteView(generics.DestroyAPIView):
-    """
-    Allows authenticated users (specific book's author) to delete a book.
-    """
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated, IsAuthorOrReadOnly]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['title', 'author__name', 'publication_year']  # Fields for filtering
+    search_fields = ['title', 'author__name']  # Fields for searching
+    ordering_fields = ['title', 'publication_year']  # Fields for sorting
