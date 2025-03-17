@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'blog',  # Added your blog app here
+    'blog',  # Blog app added here
 ]
 
 MIDDLEWARE = [
@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'django_blog.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',  # Using PostgreSQL for this example
+        'ENGINE': 'django.db.backends.postgresql',  # Use PostgreSQL for this example
         'NAME': 'django_blog_db',                  # Replace with your database name
         'USER': 'your_db_user',                    # Replace with your database username
         'PASSWORD': 'your_db_password',            # Replace with your database password
@@ -122,8 +122,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# This tells Django to look for static files in the specified directory
 STATICFILES_DIRS = [
-    BASE_DIR / "blog/static",  # Added static files directory
+    BASE_DIR / "blog/static",
 ]
 
 # Default primary key field type
