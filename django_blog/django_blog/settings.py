@@ -122,12 +122,19 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# This tells Django to look for static files in the specified directory
 STATICFILES_DIRS = [
-    BASE_DIR / "blog/static",
+    BASE_DIR / "blog/static",  # Ensure this points to the blog's static directory
 ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Media files (User-uploaded content like profile pictures)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Login and Register static files
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/'

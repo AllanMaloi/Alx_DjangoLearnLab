@@ -12,4 +12,5 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),  # Includes all the URLs from the blog app
+path('static/<path:path>/', views.serve_static, name='serve_static'),
 ]
