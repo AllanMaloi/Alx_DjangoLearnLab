@@ -17,7 +17,7 @@ def register(request):
             return redirect('login')  # Redirect to the login page after registration
     else:
         form = UserCreationForm()
-    return render(request, 'blog/register.html', {'form': form})
+    return render(request, 'registration/register.html', {'form': form})  # Updated template path
 
 # Profile View (requires login)
 @login_required
