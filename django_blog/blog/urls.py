@@ -3,10 +3,10 @@ from django.contrib.auth import views as auth_views
 from . import views  # Import your app's views
 
 urlpatterns = [
-    # Static test route
+    # Static test route (Optional; remove if no longer needed)
     path('static-test/', views.static_test, name='static_test'),
 
-    # Registration and Profile
+    # Registration and Profile views
     path('register/', views.register, name='register'),
     path('profile/', views.profile, name='profile'),
 

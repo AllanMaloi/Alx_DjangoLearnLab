@@ -3,10 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 
-# View for testing static files
-def static_test(request):
-    return render(request, 'blog/static_test.html')
-
 # Custom Register View
 def register(request):
     if request.method == 'POST':
@@ -17,9 +13,13 @@ def register(request):
             return redirect('login')  # Redirect to the login page after registration
     else:
         form = UserCreationForm()
-    return render(request, 'registration/register.html', {'form': form})  # Updated template path
+    return render(request, 'registration/register.html', {'form': form})  # Ensure correct template path
 
 # Profile View (requires login)
 @login_required
 def profile(request):
     return render(request, 'blog/profile.html')
+
+# View for testing static files (Optional, for debugging static files)
+def static_test(request):
+    return render(request, 'blog/static_test.html')  # You can remove this if it's no longer needed
