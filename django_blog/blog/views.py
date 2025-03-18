@@ -19,7 +19,3 @@ def register(request):
 @login_required
 def profile(request):
     return render(request, 'blog/profile.html')
-
-# View for testing static files (Optional, for debugging static files)
-def static_test(request):
-    return render(request, 'blog/static_test.html')  # You can remove this if it's no longer needed
