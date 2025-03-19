@@ -10,14 +10,15 @@ from .views import (
     PostDeleteView, 
     CommentCreateView,  # ✅ Ensure this is correctly imported
     CommentUpdateView, 
-    CommentDeleteView
+    CommentDeleteView,
+    PostByTagListView  # ✅ Added for filtering posts by tag
 )
 
 urlpatterns = [
     path("register/", register, name="register"),
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
-    path("profile/", profile_view, name="profile"),  # Add profile URL
+    path("profile/", profile_view, name="profile"),  # Profile URL
     path('', PostListView.as_view(), name='posts'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
     path('post/new/', PostCreateView.as_view(), name='post_create'),
@@ -26,6 +27,6 @@ urlpatterns = [
     path('post/<int:pk>/comments/new/', CommentCreateView.as_view(), name='add_comment'),  # ✅ Fixed
     path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment_update'),
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment_delete'),
-     path('search/', SearchResultsView.as_view(), name='search_results'),
-    path('tags/<str:tag_name>/', TagListView.as_view(), name='tag_posts'),
+    path('search/', SearchResultsView.as_view(), name='search_results'),
+    path('tags/<slug:tag_slug>/', PostByTagListView.as_view(), name='posts_by_tag'),  # ✅ Fixed URL pattern
 ]
