@@ -44,45 +44,38 @@ def profile_view(request):
 # List View - Show all posts
 class PostListView(ListView):
     model = Post
-    template_name = 'blog/post_list.html'
+    template_name = 'blog/post_list.html'  # Update to your actual template name
     context_object_name = 'posts'
-    ordering = ['-created_at']  # Newest posts first
 
-# Detail View - Show a single post
 class PostDetailView(DetailView):
     model = Post
-    template_name = 'blog/post_detail.html'
+    template_name = 'blog/post_detail.html'  # Update to your actual template name
 
-# Create View - Add new post
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    form_class = PostForm
     template_name = 'blog/post_form.html'
+    fields = ['title', 'content']
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
+        form.instance.author = self.request.user  # Assign logged-in user as author
         return super().form_valid(form)
 
-# Update View - Edit post (Only the author can edit)
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    form_class = PostForm
     template_name = 'blog/post_form.html'
-
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
+    fields = ['title', 'content']
 
     def test_func(self):
+        """ Ensure only the author can edit """
         post = self.get_object()
-        return self.request.user == post.author
+        return self.request.user == post.author  # ✅ Restrict editing to the author
 
-# Delete View - Delete post (Only the author can delete)
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'blog/post_confirm_delete.html'
-    success_url = reverse_lazy('post-list')
+    success_url = reverse_lazy('posts')
 
     def test_func(self):
+        """ Ensure only the author can delete """
         post = self.get_object()
-        return self.request.user == post.author
+        return self.request.user == post.author  # ✅ Restrict deletion to the author
