@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from taggit.managers import TaggableManager  # Import tagging
+
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
@@ -8,6 +10,9 @@ class Post(models.Model):
     published_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    tags = TaggableManager()  # Add tag support
 
     def __str__(self):
         return self.title

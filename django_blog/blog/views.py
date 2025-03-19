@@ -7,6 +7,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post, Comment
 from .forms import CustomUserCreationForm, PostForm, CommentForm
+from .forms import PostForm
+from taggit.models import Tag
+from django.db.models import Q
 
 # Register View
 def register(request):
@@ -66,11 +69,22 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user  # Assign logged-in user as author
         return super().form_valid(form)
+        post = form.save(commit=False)
+        post.save()
+        post.tags.set(form.cleaned_data['tags'])  # Save tags
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     template_name = 'blog/post_form.html'
     fields = ['title', 'content']
+    form_class = PostForm
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.save()
+        post.tags.set(form.cleaned_data['tags'])  # Update tags
+        return super().form_valid(form)
+
 
     def test_func(self):
         """ Ensure only the author can edit """
@@ -134,3 +148,23 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         """ Ensure only the comment author can delete """
         comment = self.get_object()
         return self.request.user == comment.author
+    
+class SearchResultsView(ListView):
+    model = Post
+    template_name = 'blog/search_results.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        return Post.objects.filter(
+            Q(title__icontains=query) | 
+            Q(content__icontains=query) | 
+            Q(tags__name__icontains=query)
+        ).distinct()
+
+class TagListView(ListView):
+    model = Post
+    template_name = 'blog/tag_posts.html'
+
+    def get_queryset(self):
+        return Post.objects.filter(tags__name=self.kwargs['tag_name'])
+

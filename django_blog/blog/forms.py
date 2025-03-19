@@ -14,9 +14,14 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class PostForm(forms.ModelForm):
+    tags = forms.CharField(required=False, help_text="Enter tags separated by commas.")
+
     class Meta:
         model = Post
-        fields = ['title', 'content']
+        fields = ['title', 'content', 'tags']
+
+def clean_tags(self):
+        return [tag.strip() for tag in self.cleaned_data['tags'].split(',')]
 
 class CommentForm(forms.ModelForm):
     class Meta:
