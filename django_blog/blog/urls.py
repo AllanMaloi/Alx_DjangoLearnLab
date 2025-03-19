@@ -1,8 +1,10 @@
 from django.urls import path
-from .views import register, login_view, logout_view
+from .views import register, login_view, logout_view, profile_view
+from django.shortcuts import render
 
 urlpatterns = [
     path("register/", register, name="register"),
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
+    path("profile/", profile_view, name="profile"),  # Add profile URL
 ]

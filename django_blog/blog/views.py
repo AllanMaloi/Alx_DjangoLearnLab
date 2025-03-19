@@ -31,3 +31,6 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("home")
+
+def profile_view(request):
+    return render(request, "blog/profile.html")  # Make sure this template exists
