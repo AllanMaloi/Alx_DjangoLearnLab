@@ -36,7 +36,10 @@ class FeedView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Post.objects.filter(author__in=user.following.all()).order_by('-created_at')
+        following_users = user.following.all()  # Ensure this field exists in CustomUser
+
+        # Ensure the correct query structure
+        return Post.objects.filter(author__in=following_users).order_by('-created_at')
 
 
 # ✅ Like a Post
