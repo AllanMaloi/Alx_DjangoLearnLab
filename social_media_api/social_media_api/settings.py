@@ -69,9 +69,21 @@ TEMPLATES = [
 WSGI_APPLICATION = "social_media_api.wsgi.application"
 
 # ✅ Database Configuration (PostgreSQL in production, SQLite locally)
-DATABASES = {
-    "default": dj_database_url.config(default=f"sqlite:///{BASE_DIR}/db.sqlite3", conn_max_age=600, ssl_require=True)
-}
+if os.getenv("DATABASE_URL"):  # ✅ If DATABASE_URL is set, use PostgreSQL (for production)
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=os.getenv("DATABASE_URL"),
+            conn_max_age=600,
+            ssl_require=True,
+        )
+    }
+else:  # ✅ Fallback to SQLite (for local development)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
