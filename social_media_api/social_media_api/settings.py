@@ -77,6 +77,10 @@ if os.getenv("DATABASE_URL"):  # ✅ If DATABASE_URL is set, use PostgreSQL (for
             ssl_require=True,
         )
     }
+    
+    # ✅ Ensure PORT is explicitly set (Render might require it)
+    DATABASES["default"]["PORT"] = os.getenv("DB_PORT", "5432")
+
 else:  # ✅ Fallback to SQLite (for local development)
     DATABASES = {
         "default": {
