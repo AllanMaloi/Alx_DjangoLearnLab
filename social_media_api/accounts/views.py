@@ -7,8 +7,7 @@ from django.contrib.auth import get_user_model
 from accounts.serializers import CustomUserSerializer
 from .serializers import UserSerializer
 
-
-User = get_user_model()
+CustomUser = get_user_model()  # Explicitly referencing CustomUser
 
 # Registration View
 class RegisterView(APIView):
@@ -26,19 +25,21 @@ class CustomAuthToken(ObtainAuthToken):
         response = super().post(request, *args, **kwargs)
         token = response.data['token']
         return Response({'token': token}, status=status.HTTP_200_OK)
-    
+
+# Follow User View
 class FollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()  # ✅ Now explicitly using CustomUser.objects.all()
 
     def post(self, request, user_id):
         user_to_follow = self.get_queryset().get(id=user_id)
         request.user.following.add(user_to_follow)
         return Response({"message": f"You are now following {user_to_follow.username}"}, status=status.HTTP_200_OK)
 
+# Unfollow User View
 class UnfollowUserView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()  # ✅ Now explicitly using CustomUser.objects.all()
 
     def post(self, request, user_id):
         user_to_unfollow = self.get_queryset().get(id=user_id)
